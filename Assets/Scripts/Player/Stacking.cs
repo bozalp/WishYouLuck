@@ -5,7 +5,7 @@ using UnityEngine;
 public class Stacking : MonoBehaviour
 {
     [SerializeField]
-    private List<GameObject> cubes;
+    private List<GameObject> coins;
     [SerializeField]
     private float swingValue = .3f;
     [SerializeField]
@@ -16,32 +16,64 @@ public class Stacking : MonoBehaviour
 
     public void AddCube(GameObject collectedCoin)
     {
-        collectedCoin.transform.localEulerAngles = new Vector3(Random.Range(0,360), -90, 90);
+        collectedCoin.transform.localEulerAngles = new Vector3(Random.Range(0, 360), -90, 90);
         float tempForwardPosition = coinForwardPosition;
-        cubes.Add(collectedCoin);
+        coins.Add(collectedCoin);
         collectedCoin.transform.parent = gameObject.transform;
-        collectedCoin.transform.localPosition = new Vector3(cubes[cubes.Count - 2].transform.localPosition.x, 5,
-        cubes[cubes.Count - 2].transform.localPosition.z + coinForwardPosition);
+        collectedCoin.transform.localPosition = new Vector3(coins[coins.Count - 2].transform.localPosition.x, 5,
+        coins[coins.Count - 2].transform.localPosition.z + coinForwardPosition);
 
+    }
+    public void RemoveCoinWithObstacle(GameObject crashedCoin)
+    {
+        int crashedCoinIndex = coins.IndexOf(crashedCoin.transform.gameObject);
+        int y = coins.Count;
+        if (crashedCoinIndex > 2)
+            for (int i = y - 1; i > crashedCoinIndex; i--)
+            {
+                //cubes[i].transform.position = new Vector3(0, -15, 0);
+                coins[i].GetComponent<AddCoins>().enabled = false;
+                coins[i].GetComponent<MeshCollider>().enabled = false;
+                // coins.Remove(coins[i]);
+                
+
+                //Destroy(cubes[i]);
+            }
+
+        //StartCoroutine(RemoveFromList(crashedManIndex));
     }
     private void Update()
     {
         MoveHorizontal();
         Swipe();
         SwingMovement();
+
+        for (int i = 2; i < coins.Count; i++)
+        {
+            if (!coins[i].GetComponent<AddCoins>().enabled)
+            {
+                coins[i].GetComponent<Rigidbody>().AddForce(new Vector3(Random.Range(-25, 25), Random.Range(15, 30), 0), ForceMode.Impulse);
+                coins.Remove(coins[i]);
+            }
+        }
+    }
+
+    public int GetCoinCount()
+    {
+        return coins.Count - 2;//root ve player liste basinda oldugu icin -2
     }
 
     private void SwingMovement()
     {
-        for (int i = 1; i < cubes.Count; i++)
+        for (int i = 1; i < coins.Count; i++)
         {
-            prevCoin = cubes[i - 1];
-            currCoin = cubes[i];
+            prevCoin = coins[i - 1];
+            currCoin = coins[i];
 
             Vector3 newPos;
             newPos.x = prevCoin.transform.localPosition.x;
-            newPos.y = 1;// cubes[0].transform.localPosition.y;// root-player
-            newPos.z = cubes[i].transform.localPosition.z;
+            newPos.y = 1.2f;// cubes[0].transform.localPosition.y;// root-player
+            newPos.z = coins[i].transform.localPosition.z;
 
             currCoin.transform.localPosition = Vector3.Lerp(currCoin.transform.localPosition, newPos, swingValue);
         }
@@ -51,17 +83,17 @@ public class Stacking : MonoBehaviour
         var currentPos = transform.localPosition;
         var dragPos = Vector3.right * inputDrag.x * swipeSpeed * Time.deltaTime;
 
-        if (cubes[0].transform.localPosition.x > rightMovementLimitPos)
+        if (coins[0].transform.localPosition.x > rightMovementLimitPos)
         {
-            cubes[0].transform.localPosition = new Vector3(rightMovementLimitPos - .02f, transform.localPosition.y, 0);
+            coins[0].transform.localPosition = new Vector3(rightMovementLimitPos - .02f, transform.localPosition.y, 0);
         }
-        if (cubes[0].transform.localPosition.x < leftMovementLimitPos)
+        if (coins[0].transform.localPosition.x < leftMovementLimitPos)
         {
-            cubes[0].transform.localPosition = new Vector3(leftMovementLimitPos + .02f, transform.localPosition.y, 0);
+            coins[0].transform.localPosition = new Vector3(leftMovementLimitPos + .02f, transform.localPosition.y, 0);
         }
         else
         {
-            cubes[0].transform.localPosition += dragPos;
+            coins[0].transform.localPosition += dragPos;
         }
     }
     private void Swipe()

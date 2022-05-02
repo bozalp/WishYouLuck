@@ -15,9 +15,19 @@ public class AddCoins : MonoBehaviour
     {
         if (other.gameObject.tag == "Coin")
         {
+            other.gameObject.tag = "Untagged";
             stacking.AddCube(other.gameObject);
             coinCount.UpdateCoinCount();
             //other.gameObject.tag = "Untagged";
+        }
+        if(other.gameObject.tag == "Obstacle")
+        {
+            if(gameObject.GetComponent<MeshCollider>())
+            {
+                gameObject.GetComponent<AddCoins>().enabled = false;
+                gameObject.GetComponent<MeshCollider>().enabled = false;
+                stacking.RemoveCoinWithObstacle(gameObject);
+            }
         }
     }
 }
