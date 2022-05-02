@@ -10,9 +10,14 @@ public class Stacking : MonoBehaviour
     private float swingValue = .3f;
     [SerializeField]
     private float swipeSpeed, rightMovementLimitPos, leftMovementLimitPos, forwardSpeed = 8, coinForwardPosition;
-
+    private CoinCount coinCount;
     private GameObject currCoin, prevCoin;
     private Vector3 inputDrag, preMousePos;
+
+    private void Start()
+    {
+        coinCount = GameObject.FindObjectOfType<CoinCount>();
+    }
 
     public void AddCube(GameObject collectedCoin)
     {
@@ -52,6 +57,7 @@ public class Stacking : MonoBehaviour
         {
             if (!coins[i].GetComponent<AddCoins>().enabled)
             {
+                coinCount.UpdateCoinCount();
                 coins[i].GetComponent<Rigidbody>().AddForce(new Vector3(Random.Range(-45, 45), Random.Range(30, 60), 0), ForceMode.Impulse);
                 coins.Remove(coins[i]);
             }
