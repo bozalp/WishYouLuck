@@ -52,7 +52,7 @@ public class Stacking : MonoBehaviour
         {
             if (!coins[i].GetComponent<AddCoins>().enabled)
             {
-                coins[i].GetComponent<Rigidbody>().AddForce(new Vector3(Random.Range(-25, 25), Random.Range(15, 30), 0), ForceMode.Impulse);
+                coins[i].GetComponent<Rigidbody>().AddForce(new Vector3(Random.Range(-45, 45), Random.Range(30, 60), 0), ForceMode.Impulse);
                 coins.Remove(coins[i]);
             }
         }
