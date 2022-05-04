@@ -2550,6 +2550,8 @@ MonoBehaviour:
   coinForwardPosition: 0.3
   stopDiceGate: 0
   stopFinish: 0
+  stopRouletteGate: 0
+  stopMovement: 0
   totalCoinBeforeFinish: 0
 --- !u!114 &715287331
 MonoBehaviour:
@@ -2563,7 +2565,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1fee898e058016542af2636d410e49e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  forwardSpeed: 12
+  forwardSpeed: 8
 --- !u!114 &715287332
 MonoBehaviour:
   m_ObjectHideFlags: 0

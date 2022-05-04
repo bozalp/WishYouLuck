@@ -18,7 +18,6 @@ public class AddCoins : MonoBehaviour
             other.gameObject.tag = "Untagged";
             stacking.AddCoin(other.gameObject);
             coinCount.UpdateCoinCount();
-            //other.gameObject.tag = "Untagged";
         }
         if(other.gameObject.tag == "Obstacle")
         {

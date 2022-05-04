@@ -7,7 +7,6 @@ public class ObstacleMovement : MonoBehaviour
     [SerializeField]
     private float rotationSpeed, xPosLimit, movementSpeed;
 
-    // Update is called once per frame
     void Update()
     {
         transform.position = new Vector3(Mathf.PingPong(Time.time * movementSpeed, xPosLimit) - 3f,

@@ -54,7 +54,6 @@ public class GiveDiceResult : MonoBehaviour
                     diceNum = 1;
                     break;
             }
-            print("1>" + diceNum);
         }
     }
 }
