@@ -15,9 +15,9 @@ public class Stacking : MonoBehaviour
     private GameObject currCoin, prevCoin;
     private Vector3 inputDrag, preMousePos;
     private PlayerMovement playerMovement;
-    private bool stopMovement, beforeFinish;
+    private bool beforeFinish;
     [HideInInspector]
-    public bool stopDiceGate, stopFinish, stopRouletteGate;
+    public bool stopDiceGate, stopFinish, stopRouletteGate, stopMovement;
     public int totalCoinBeforeFinish;
     private Dice dice;
     private Roulette roulette;

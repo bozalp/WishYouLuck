@@ -21,10 +21,10 @@ public class GiveDiceResult : MonoBehaviour
         {
             stacking.stopDiceGate = false;
 
-            Invoke("x", 1f);
+            Invoke("diceStop", 1f);
         }
     }
-    private void x()
+    private void diceStop()
     {
         diceStoped = true;
     }
@@ -32,8 +32,7 @@ public class GiveDiceResult : MonoBehaviour
     private void OnTriggerStay(Collider other)
     {
         if (diceStoped)
-        {
-            
+        {            
             switch (other.gameObject.name)
             {
                 case "1":
@@ -57,23 +56,5 @@ public class GiveDiceResult : MonoBehaviour
             }
             print("1>" + diceNum);
         }
-        //}
-        //public void DiceControl()
-        //{
-        //    x = true;
-        //    int total = dice[0].number1 + dice[1].number2;
-        //    if (total % 2 == 0)//cift sayi
-        //    {
-        //       // resultTxt.text = "EVEN";
-        //        odd = false;
-        //        //formation.AddRunners(diceGates.getEvenCount() * 2 + 1);
-        //    }
-        //    else
-        //    {
-        //      //  resultTxt.text = "ODD";
-        //        odd = true;
-        //        //formation.AddRunners(diceGates.getOddCount() * 2 + 1);
-        //    }
-        //}
     }
 }

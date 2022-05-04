@@ -58,6 +58,7 @@ public class RouletteGate : MonoBehaviour
                 DOTween.To(() => playerMovement.ForwardSpeed, x => playerMovement.ForwardSpeed = x, tempSpeed, .1f);
                 AnimationManager.instance.StartRunAnimation();
             });
+        stacking.stopMovement = false;
     }
 
     public int ReCounter

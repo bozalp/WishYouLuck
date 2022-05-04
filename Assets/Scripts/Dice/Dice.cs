@@ -13,9 +13,7 @@ public class Dice : MonoBehaviour
         float dirX = Random.Range(100, 500);
         float dirY = Random.Range(100, 250);
         float dirZ = Random.Range(100, 500);
-        //transform.position = new Vector3(transform.position.x);
         transform.rotation = Quaternion.identity;
-        //rb.AddForce(new Vector3(dirX, dirY, dirZ), ForceMode.Impulse);
         leftDice.GetComponent<Rigidbody>().AddForce(transform.up * Random.Range(5, 10), ForceMode.Impulse);
         rightDice.GetComponent<Rigidbody>().AddForce(transform.up * Random.Range(5, 10), ForceMode.Impulse);
         leftDice.GetComponent<Rigidbody>().AddTorque(dirX, dirY, dirZ);
