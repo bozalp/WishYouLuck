@@ -46,6 +46,7 @@ public class Roulette : MonoBehaviour
     }
     private void StopTheBallMovement()
     {
-        DOTween.Kill(sequence);
+      //  DOTween.Kill(sequence);
+        DOTween.KillAll();
     }
 }

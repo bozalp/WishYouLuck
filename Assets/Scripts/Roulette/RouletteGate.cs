@@ -33,7 +33,7 @@ public class RouletteGate : MonoBehaviour
             goForward = true;
             if (ball.isRed)
             {
-                for (int i = 0; i < redCounter; i++)
+                for (int i = 0; i < redCounter * 2; i++)
                 {
                     GameObject coin = Instantiate(coins[Random.Range(0, coins.Length)], transform);
                     stacking.AddCoin(coin);
@@ -41,13 +41,13 @@ public class RouletteGate : MonoBehaviour
             }
             else
             {
-                for (int i = 0; i < blackCounter; i++)
+                for (int i = 0; i < blackCounter * 2; i++)
                 {
                     GameObject coin = Instantiate(coins[Random.Range(0, coins.Length)], transform);
                     stacking.AddCoin(coin);
                 }
             }
-            Invoke("GoRunning", 2f);
+            Invoke("GoRunning", 1f);
         }
     }
     private void GoRunning()
