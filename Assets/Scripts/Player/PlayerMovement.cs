@@ -6,6 +6,22 @@ public class PlayerMovement : MonoBehaviour
 {
     [SerializeField]
     private float forwardSpeed = 8;
+    private float tempSpeed;
+    private void Start()
+    {
+        tempSpeed = forwardSpeed;
+    }
+    public float ForwardSpeed
+    {
+        get
+        {
+            return forwardSpeed;
+        }
+        set
+        {
+            forwardSpeed = value;
+        }
+    }
     void Update()
     {
         if(GameManager.instance.IsStart && !GameManager.instance.IsWon && !GameManager.instance.IsFailed)

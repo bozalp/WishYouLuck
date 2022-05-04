@@ -14,6 +14,10 @@ public class CoinCount : MonoBehaviour
         stacking = GameObject.FindObjectOfType<Stacking>();
         UpdateCoinCount();
     }
+    private void Update()
+    {
+        UpdateCoinCount();
+    }
 
     public void UpdateCoinCount()
     {

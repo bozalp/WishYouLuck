@@ -16,7 +16,7 @@ public class AddCoins : MonoBehaviour
         if (other.gameObject.tag == "Coin")
         {
             other.gameObject.tag = "Untagged";
-            stacking.AddCube(other.gameObject);
+            stacking.AddCoin(other.gameObject);
             coinCount.UpdateCoinCount();
             //other.gameObject.tag = "Untagged";
         }

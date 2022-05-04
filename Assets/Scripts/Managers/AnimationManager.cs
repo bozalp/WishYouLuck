@@ -31,7 +31,8 @@ public class AnimationManager : MonoBehaviour
     }
 
     public void StartRunAnimation() => animator.SetTrigger("Run");
-    public void StartVictoryAnimation() => animator.SetTrigger("Dance");
+    public void StartVictoryAnimation() => animator.SetTrigger("Victory");
+    public void StartIdleAnimation() => animator.SetTrigger("Idle");
 
     #endregion
 }

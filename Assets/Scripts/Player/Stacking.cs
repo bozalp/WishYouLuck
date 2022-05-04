@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class Stacking : MonoBehaviour
 {
@@ -13,13 +14,21 @@ public class Stacking : MonoBehaviour
     private CoinCount coinCount;
     private GameObject currCoin, prevCoin;
     private Vector3 inputDrag, preMousePos;
-
+    private PlayerMovement playerMovement;
+    private bool stopMovement;
+    [HideInInspector]
+    public bool stopDiceGate;
+   
+    private Dice dice;
     private void Start()
     {
+        DOTween.Init();
         coinCount = GameObject.FindObjectOfType<CoinCount>();
+        playerMovement = GameObject.FindObjectOfType<PlayerMovement>();
+        dice = GameObject.FindObjectOfType<Dice>();
     }
 
-    public void AddCube(GameObject collectedCoin)
+    public void AddCoin(GameObject collectedCoin)
     {
         collectedCoin.transform.localEulerAngles = new Vector3(Random.Range(0, 360), -90, 90);
         float tempForwardPosition = coinForwardPosition;
@@ -27,7 +36,6 @@ public class Stacking : MonoBehaviour
         collectedCoin.transform.parent = gameObject.transform;
         collectedCoin.transform.localPosition = new Vector3(coins[coins.Count - 2].transform.localPosition.x, 5,
         coins[coins.Count - 2].transform.localPosition.z + coinForwardPosition);
-
     }
     public void RemoveCoinWithObstacle(GameObject crashedCoin)
     {
@@ -36,23 +44,39 @@ public class Stacking : MonoBehaviour
         if (crashedCoinIndex > 2)
             for (int i = y - 1; i > crashedCoinIndex; i--)
             {
-                //cubes[i].transform.position = new Vector3(0, -15, 0);
                 coins[i].GetComponent<AddCoins>().enabled = false;
                 coins[i].GetComponent<MeshCollider>().enabled = false;
-                // coins.Remove(coins[i]);
-                
-
-                //Destroy(cubes[i]);
             }
-
-        //StartCoroutine(RemoveFromList(crashedManIndex));
+    }
+    public void RemoveCoin(GameObject coin)
+    {
+        coins.Remove(coin);
     }
     private void Update()
     {
-        MoveHorizontal();
-        Swipe();
-        SwingMovement();
+        if(GameManager.instance.IsStart && !GameManager.instance.IsFailed && !GameManager.instance.IsWon)
+        {
+            MoveHorizontal();
+            Swipe();
+            SwingMovement();
+            RemoveCoins();
 
+            if (coins.Count < 3 && !stopMovement && stopDiceGate)
+            {
+                dice.toDice();
+                stopDiceGate = false;
+                stopMovement = true;
+                Invoke("StopCamera", .5f);
+            }
+        }
+    }
+    private void StopCamera()
+    {
+        AnimationManager.instance.StartIdleAnimation();
+        DOTween.To(() => playerMovement.ForwardSpeed, x => playerMovement.ForwardSpeed = x, 0, 1f);
+    }
+    private void RemoveCoins()
+    {
         for (int i = 2; i < coins.Count; i++)
         {
             if (!coins[i].GetComponent<AddCoins>().enabled)
@@ -63,7 +87,6 @@ public class Stacking : MonoBehaviour
             }
         }
     }
-
     public int GetCoinCount()
     {
         return coins.Count - 2;//root ve player liste basinda oldugu icin -2
