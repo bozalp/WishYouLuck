@@ -38,12 +38,9 @@ public class DiceCheck : MonoBehaviour
     }
     public void DiceControl()
     {
-        //x = true;
-
         total = diceNum1 + diceNum2;
         if (total % 2 == 0)
         {
-            print("even");
             odd = false;
             int evetCount = diceGate.EvenCount * 2;
             for (int i = 0; i < evetCount; i++)
@@ -54,7 +51,6 @@ public class DiceCheck : MonoBehaviour
         }
         else
         {
-            print("odd");
             odd = true;
             int oddCount = diceGate.OddCount * 2;
             for (int i = 0; i < oddCount; i++)

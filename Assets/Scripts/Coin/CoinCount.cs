@@ -21,15 +21,6 @@ public class CoinCount : MonoBehaviour
 
     public void UpdateCoinCount()
     {
-        //var x = GetComponentsInChildren<Transform>();
-        //for (int i = 0; i < x.Length; i++)
-        //{
-        //    if (x[i].gameObject.tag == "Coin")
-        //    {
-        //        coins.Add(x[i].gameObject);
-        //        x[i].transform.tag = "Untagged";
-        //    }
-        //}
         totalCoinTxt.text = "$" + stacking.GetCoinCount().ToString();
     }
 }

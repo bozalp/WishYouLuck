@@ -29,5 +29,14 @@ public class AddCoins : MonoBehaviour
                 stacking.RemoveCoinWithObstacle(gameObject);
             }
         }
+        if (other.gameObject.tag == "Finish")
+        {
+            if (gameObject.GetComponent<MeshCollider>())
+            {
+                gameObject.GetComponent<MeshCollider>().enabled = false;
+                gameObject.GetComponent<AddCoins>().enabled = false;
+                stacking.RemoveCoinWithFinish(gameObject);
+            }
+        }
     }
 }

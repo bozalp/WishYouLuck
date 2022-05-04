@@ -15,21 +15,24 @@ public class Stacking : MonoBehaviour
     private GameObject currCoin, prevCoin;
     private Vector3 inputDrag, preMousePos;
     private PlayerMovement playerMovement;
-    private bool stopMovement;
+    private bool stopMovement, beforeFinish;
     [HideInInspector]
-    public bool stopDiceGate;
-   
+    public bool stopDiceGate, stopFinish;
+    public int totalCoinBeforeFinish;
     private Dice dice;
+    private FinishCoinCreate FinishCoinCreate;
     private void Start()
     {
         DOTween.Init();
         coinCount = GameObject.FindObjectOfType<CoinCount>();
         playerMovement = GameObject.FindObjectOfType<PlayerMovement>();
+        FinishCoinCreate = GameObject.FindObjectOfType<FinishCoinCreate>();
         dice = GameObject.FindObjectOfType<Dice>();
     }
 
     public void AddCoin(GameObject collectedCoin)
     {
+        collectedCoin.gameObject.tag = "Untagged";
         collectedCoin.transform.localEulerAngles = new Vector3(Random.Range(0, 360), -90, 90);
         float tempForwardPosition = coinForwardPosition;
         coins.Add(collectedCoin);
@@ -48,18 +51,26 @@ public class Stacking : MonoBehaviour
                 coins[i].GetComponent<MeshCollider>().enabled = false;
             }
     }
+    public void RemoveCoinWithFinish(GameObject coin)
+    {
+        coin.GetComponent<AddCoins>().enabled = false;
+        coin.GetComponent<MeshCollider>().enabled = false;
+    }
     public void RemoveCoin(GameObject coin)
     {
         coins.Remove(coin);
     }
     private void Update()
     {
-        if(GameManager.instance.IsStart && !GameManager.instance.IsFailed && !GameManager.instance.IsWon)
+        if (GameManager.instance.IsStart && !GameManager.instance.IsFailed && !GameManager.instance.IsWon)
         {
             MoveHorizontal();
             Swipe();
             SwingMovement();
-            RemoveCoins();
+            if (!stopFinish)
+                RemoveCoins();
+            //if (stopFinish)
+            //    RemoveCoinsAtFinish();
 
             if (coins.Count < 3 && !stopMovement && stopDiceGate)
             {
@@ -68,7 +79,28 @@ public class Stacking : MonoBehaviour
                 stopMovement = true;
                 Invoke("StopCamera", .5f);
             }
+            if (stopFinish && !beforeFinish)
+            {
+                beforeFinish = true;
+                totalCoinBeforeFinish = GetCoinCount();
+            }
+
+            if (coins.Count < 3 && stopFinish)
+            {
+                stopFinish = false;
+                Invoke("FinishSortCoins", .5f);
+            }
         }
+    }
+    private void FinishSortCoins()
+    {
+        GameManager.instance.IsWon = true;
+        coins[0].GetComponent<BoxCollider>().enabled = false;//player boxcollider kapatiyorum
+        AnimationManager.instance.StartIdleAnimation();
+        DOTween.To(() => playerMovement.ForwardSpeed, x => playerMovement.ForwardSpeed = x, 0, 1f);
+
+        int totalCoin = totalCoinBeforeFinish + 1;
+        FinishCoinCreate.CreateCoin(totalCoin);
     }
     private void StopCamera()
     {
@@ -83,6 +115,16 @@ public class Stacking : MonoBehaviour
             {
                 coinCount.UpdateCoinCount();
                 coins[i].GetComponent<Rigidbody>().AddForce(new Vector3(Random.Range(-45, 45), Random.Range(30, 60), 0), ForceMode.Impulse);
+                coins.Remove(coins[i]);
+            }
+        }
+    }
+    private void RemoveCoinsAtFinish()
+    {
+        for (int i = 2; i < coins.Count; i++)
+        {
+            if (!coins[i].GetComponent<AddCoins>().enabled)
+            {
                 coins.Remove(coins[i]);
             }
         }
