@@ -17,9 +17,10 @@ public class Stacking : MonoBehaviour
     private PlayerMovement playerMovement;
     private bool stopMovement, beforeFinish;
     [HideInInspector]
-    public bool stopDiceGate, stopFinish;
+    public bool stopDiceGate, stopFinish, stopRouletteGate;
     public int totalCoinBeforeFinish;
     private Dice dice;
+    private Roulette roulette;
     private FinishCoinCreate FinishCoinCreate;
     private void Start()
     {
@@ -28,6 +29,7 @@ public class Stacking : MonoBehaviour
         playerMovement = GameObject.FindObjectOfType<PlayerMovement>();
         FinishCoinCreate = GameObject.FindObjectOfType<FinishCoinCreate>();
         dice = GameObject.FindObjectOfType<Dice>();
+        roulette = GameObject.FindObjectOfType<Roulette>();
     }
 
     public void AddCoin(GameObject collectedCoin)
@@ -69,22 +71,28 @@ public class Stacking : MonoBehaviour
             SwingMovement();
             if (!stopFinish)
                 RemoveCoins();
-            //if (stopFinish)
-            //    RemoveCoinsAtFinish();
 
-            if (coins.Count < 3 && !stopMovement && stopDiceGate)
+            if (coins.Count < 3 && !stopMovement && stopDiceGate)//dice kismi
             {
                 dice.toDice();
                 stopDiceGate = false;
                 stopMovement = true;
                 Invoke("StopCamera", .5f);
             }
+            if (coins.Count < 3 && !stopMovement && stopRouletteGate)//rulet kismi
+            {
+                roulette.PlayRoulette();
+                stopRouletteGate = false;
+                stopMovement = true;
+                Invoke("StopCamera", .5f);
+            }
+
+            //finish kismi
             if (stopFinish && !beforeFinish)
             {
                 beforeFinish = true;
                 totalCoinBeforeFinish = GetCoinCount();
             }
-
             if (coins.Count < 3 && stopFinish)
             {
                 stopFinish = false;

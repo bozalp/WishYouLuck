@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class Gate : MonoBehaviour
+public class DiceGate : MonoBehaviour
 {
     [SerializeField]
     private TextMeshPro oddTxt, evenTxt;

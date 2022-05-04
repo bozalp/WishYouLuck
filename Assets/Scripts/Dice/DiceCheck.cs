@@ -7,7 +7,7 @@ using DG.Tweening;
 public class DiceCheck : MonoBehaviour
 {
     [SerializeField]
-    private Gate diceGate;
+    private DiceGate diceGate;
     private Stacking stacking;
     public Dice dice;
     public bool odd;

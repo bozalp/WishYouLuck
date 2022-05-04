@@ -1,14 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
 
-public class DiceCoinCounter : MonoBehaviour
+public class RouletteCounter : MonoBehaviour
 {
     [SerializeField]
-    private DiceGate gateParent;
+    private RouletteGate rouletteGate;
     [SerializeField]
-    private bool odd;
+    private bool red;
     private Stacking stacking;
 
     private void Start()
@@ -18,12 +17,12 @@ public class DiceCoinCounter : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.GetComponent<AddCoins>() != null && !other.gameObject.GetComponent<BoxCollider>())
+        if (other.gameObject.GetComponent<AddCoins>() != null && !other.gameObject.GetComponent<BoxCollider>())
         {
-            stacking.stopDiceGate = true;
+            stacking.stopRouletteGate = true;
             Destroy(other.gameObject);
-            gateParent.UpdateDiceTexts(odd);
-            stacking.RemoveCoin(other.gameObject);   
+            rouletteGate.UpdateRouletteTexts(red);
+            stacking.RemoveCoin(other.gameObject);
         }
     }
 }
